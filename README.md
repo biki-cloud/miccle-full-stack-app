@@ -1,7 +1,7 @@
 # フルスタック FastAPI テンプレート
 
-[![Test](https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest)](https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest)
-[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/redirect/tiangolo/full-stack-fastapi-template)](https://coverage-badge.samuelcolvin.workers.dev/tiangolo/full-stack-fastapi-template.svg)
+<a href="https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/tiangolo/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
+<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/tiangolo/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/tiangolo/full-stack-fastapi-template.svg" alt="Coverage"></a>
 
 ## 技術スタックと機能
 
