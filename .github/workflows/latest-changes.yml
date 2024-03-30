@@ -24,11 +24,11 @@ on:  # このワークフローがトリガーされるイベントを定義し�
         required: false  # この入力は必須ではありません。
         default: 'false'  # デフォルトではtmateデバッグは無効になっています。
 
-jobs:  # ワークフロー内で実行されるジョブを定義します。
-  latest-changes:  # ジョブの名前を定義します。
-    runs-on: ubuntu-latest  # ジョブが実行されるランナーを定義します。この場合、最新のUbuntuランナーを使用します。
-    steps:  # ジョブ内で実行されるステップを定義します。
-      - name: Dump GitHub context  # ステップの名前を定義します。
+jobs:
+  latest-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}  # GitHubのコンテキストをJSON形式で出力します。
         run: echo "$GITHUB_CONTEXT"  # GitHubのコンテキストを表示します。
