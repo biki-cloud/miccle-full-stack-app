@@ -16,6 +16,8 @@ on:
         required: false
         default: 'false'
 
+permissions: write-all
+
 jobs:
   latest-changes:
     runs-on: ubuntu-latest
