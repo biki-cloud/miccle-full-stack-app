@@ -6,6 +6,9 @@ on:  # このワークフローがトリガーされるイベントを定義し�
   push:  # pushイベントがトリガーとなります。
     branches:
       - master  # masterブランチへのpushでワークフローが開始されます。
+  workflow_run: # workflow_runイベントがトリガーとなります。
+    workflows: [ Test ]  # "Test"ワークフローが完了したときにワークフローが開始されます。
+    types: [ completed ]  # ワークフローが完了したときにワークフローが開始されます。
 
 jobs:  # ワークフロー内で実行されるジョブを定義します。
   deploy:  # ジョブの名前を定義します。
