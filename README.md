@@ -1,166 +1,165 @@
-# Full Stack FastAPI Template
+# フルスタック FastAPI テンプレート
 
-<a href="https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/tiangolo/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
-<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/tiangolo/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/tiangolo/full-stack-fastapi-template.svg" alt="Coverage"></a>
+[![Test](https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest)](https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest)
+[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/redirect/tiangolo/full-stack-fastapi-template)](https://coverage-badge.samuelcolvin.workers.dev/tiangolo/full-stack-fastapi-template.svg)
 
-## Technology Stack and Features
+## 技術スタックと機能
 
-- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
-    - 🧰 [SQLModel](https://sqlmodel.tiangolo.com) for the Python SQL database interactions (ORM).
-    - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
-    - 💾 [PostgreSQL](https://www.postgresql.org) as the SQL database.
-- 🚀 [React](https://react.dev) for the frontend.
-    - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
-    - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
-    - 🤖 An automatically generated frontend client.
-    - 🦇 Dark mode support.
-- 🐋 [Docker Compose](https://www.docker.com) for development and production.
-- 🔒 Secure password hashing by default.
-- 🔑 JWT token authentication.
-- 📫 Email based password recovery.
-- ✅ Tests with [Pytest](https://pytest.org).
-- 📞 [Traefik](https://traefik.io) as a reverse proxy / load balancer.
-- 🚢 Deployment instructions using Docker Compose, including how to set up a frontend Traefik proxy to handle automatic HTTPS certificates.
-- 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+- ⚡ [**FastAPI**](https://fastapi.tiangolo.com)：Python バックエンド API。
+    - 🧰 [SQLModel](https://sqlmodel.tiangolo.com)：Python SQL データベースインタラクション（ORM）。
+    - 🔍 FastAPI が使用するデータの検証と設定管理のための [Pydantic](https://docs.pydantic.dev)。
+    - 💾 [PostgreSQL](https://www.postgresql.org)：SQL データベース。
+- 🚀 フロントエンドには [React](https://react.dev) を使用。
+    - 💃 TypeScript、hooks、Vite など、モダンなフロントエンドスタックの一部を使用。
+    - 🎨 フロントエンドコンポーネントには [Chakra UI](https://chakra-ui.com) を使用。
+    - 🤖 自動生成されたフロントエンドクライアント。
+    - 🦇 ダークモードのサポート。
+- 🐋 開発および本番環境用の Docker Compose。
+- 🔒 デフォルトでセキュアなパスワードハッシング。
+- 🔑 JWT トークン認証。
+- 📫 メールベースのパスワードリカバリー。
+- ✅ [Pytest](https://pytest.org) を使用したテスト。
+- 📞 リバースプロキシ/ロードバランサーとしての [Traefik](https://traefik.io)。
+- 🚢 Docker Compose を使用したデプロイ手順、自動 HTTPS 証明書を処理するフロントエンド Traefik プロキシの設定方法。
+- 🏭 GitHub Actions に基づく CI（継続的インテグレーション）および CD（継続的デプロイメント）。
 
-### Dashboard Login
+### ダッシュボード ログイン
 
 [![API docs](img/login.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Dashboard - Admin
+### ダッシュボード - 管理者
 
 [![API docs](img/dashboard.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Dashboard - Create User
+### ダッシュボード - ユーザー作成
 
 [![API docs](img/dashboard-create.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Dashboard - Items
+### ダッシュボード - アイテム
 
 [![API docs](img/dashboard-items.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Dashboard - User Settings
+### ダッシュボード - ユーザー設定
 
 [![API docs](img/dashboard-user-settings.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Dashboard - Dark Mode
+### ダッシュボード - ダークモード
 
 [![API docs](img/dashboard-dark.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-### Interactive API Documentation
+### インタラクティブ API ドキュメント
 
 [![API docs](img/docs.png)](https://github.com/tiangolo/full-stack-fastapi-template)
 
-## How To Use It
+## 使い方
 
-You can **just fork or clone** this repository and use it as is.
+このリポジトリをフォークまたはクローンして、そのまま使用できます。
 
-✨ It just works. ✨
+✨ それだけで機能します。 ✨
 
-### Configure
+### 設定
 
-You can then update configs in the `.env` files to customize your configurations.
+次に、`.env` ファイルの設定を更新して、独自の設定をカスタマイズできます。
 
-Before deploying it, make sure you change at least the values for:
+デプロイする前に、少なくとも以下の値を変更してください：
 
 - `SECRET_KEY`
 - `FIRST_SUPERUSER_PASSWORD`
 - `POSTGRES_PASSWORD`
 
-### Generate Secret Keys
+### シークレットキーの生成
 
-Some environment variables in the `.env` file have a default value of `changethis`.
+`.env` ファイル内のいくつかの環境変数にはデフォルトで `changethis` という値が設定されています。
 
-You have to change them with a secret key, to generate secret keys you can run the following command:
+これらをシークレットキーに変更するには、次のコマンドを実行してシークレットキーを生成します：
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-Copy the content and use that as password / secret key. And run that again to generate another secure key.
+コンテンツをコピーして、パスワード/シークレットキーとして使用します。そして、再度実行して別のセキュアキーを生成します。
 
-## How To Use It - Alternative With Copier
+## 使い方 - Copier を使った代替方法
 
-This repository also supports generating a new project using [Copier](https://copier.readthedocs.io).
+このリポジトリは [Copier](https://copier.readthedocs.io) を使用して新しいプロジェクトを生成することもサポートしています。
 
-It will copy all the files, ask you configuration questions, and update the `.env` files with your answers.
+Copier を使用すると、すべてのファイルがコピーされ、設定の質問が表示され、`.env` ファイルが回答に応じて更新されます。
 
-### Install Copier
+### Copier のインストール
 
-You can install Copier with:
+Copier を以下のコマンドでインストールできます：
 
 ```bash
 pip install copier
 ```
 
-Or better, if you have [`pipx`](https://pipx.pypa.io/), you can run it with:
+または、[`pipx`](https://pipx.pypa.io/) を使用している場合は、次のように実行できます：
 
 ```bash
 pipx install copier
 ```
 
-**Note**: If you have `pipx`, installing copier is optional, you could run it directly.
+**注意**: `pipx` をお持ちの場合、copier のインストールは任意です。直接実行することもできます。
 
-### Generate a Project With Copier
+### Copier を使ってプロジェクトを生成する
 
-Decide a name for your new project's directory, you will use it below. For example, `my-awesome-project`.
+新しいプロジェクトのディレクトリ名を決めて、以下の手順を実行します。例えば、`my-awesome-project` とします。
 
-Go to the directory that will be the parent of your project, and run the command with your project's name:
+プロジェクトの親ディレクトリに移動し、プロジェクト名を指定して以下のコマンドを実行します：
 
 ```bash
 copier copy https://github.com/tiangolo/full-stack-fastapi-template my-awesome-project --trust
 ```
 
-If you have `pipx` and you didn't install `copier`, you can run it directly:
-
+`pipx` をインストールしていて、`copier` をインストールしていない場合は、直接実行することができます：
 ```bash
 pipx run copier copy https://github.com/tiangolo/full-stack-fastapi-template my-awesome-project --trust
 ```
 
-**Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/tiangolo/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
+**注記**: `.env` ファイルを更新する [post-creation script](https://github.com/tiangolo/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) を実行するために `--trust` オプションが必要です。
 
-### Input Variables
+### 入力変数
 
-Copier will ask you for some data, you might want to have at hand before generating the project.
+Copier はいくつかのデータを要求しますが、プロジェクトを生成する前に手元に用意しておくことができます。
 
-But don't worry, you can just update any of that in the `.env` files afterwards.
+しかし心配する必要はありません、生成後に `.env` ファイルを更新することができます。
 
-The input variables, with their default values (some auto generated) are:
+入力変数とそのデフォルト値（一部は自動生成）は次のとおりです：
 
-- `project_name`: (default: `"FastAPI Project"`) The name of the project, shown to API users (in .env).
-- `stack_name`: (default: `"fastapi-project"`) The name of the stack used for Docker Compose labels (no spaces) (in .env).
-- `secret_key`: (default: `"changethis"`) The secret key for the project, used for security, stored in .env, you can generate one with the method above.
-- `first_superuser`: (default: `"admin@example.com"`) The email of the first superuser (in .env).
-- `first_superuser_password`: (default: `"changethis"`) The password of the first superuser (in .env).
-- `smtp_host`: (default: "") The SMTP server host to send emails, you can set it later in .env.
-- `smtp_user`: (default: "") The SMTP server user to send emails, you can set it later in .env.
-- `smtp_password`: (default: "") The SMTP server password to send emails, you can set it later in .env.
-- `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
-- `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
-- `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
+- `project_name`: (デフォルト: `"FastAPI Project"`) API ユーザーに表示されるプロジェクト名（.env内）。
+- `stack_name`: (デフォルト: `"fastapi-project"`) Docker Compose ラベルに使用されるスタックの名前（スペースなし）（.env内）。
+- `secret_key`: (デフォルト: `"changethis"`) プロジェクトのセキュリティに使用されるシークレットキー（.env内）。上記の方法で生成できます。
+- `first_superuser`: (デフォルト: `"admin@example.com"`) 最初のスーパーユーザーのメールアドレス（.env内）。
+- `first_superuser_password`: (デフォルト: `"changethis"`) 最初のスーパーユーザーのパスワード（.env内）。
+- `smtp_host`: (デフォルト: "") メールを送信するための SMTP サーバーホスト（.env内で後で設定できます）。
+- `smtp_user`: (デフォルト: "") メールを送信するための SMTP サーバーユーザー（.env内で後で設定できます）。
+- `smtp_password`: (デフォルト: "") メールを送信するための SMTP サーバーパスワード（.env内で後で設定できます）。
+- `emails_from_email`: (デフォルト: `"info@example.com"`) メールを送信するためのアカウントのメールアドレス（.env内で後で設定できます）。
+- `postgres_password`: (デフォルト: `"changethis"`) PostgreSQL データベースのパスワード（.env内）。上記の方法で生成できます。
+- `sentry_dsn`: (デフォルト: "") 使用している場合の Sentry の DSN（.env内で後で設定できます）。
 
-## Backend Development
+## バックエンド開発
 
-Backend docs: [backend/README.md](./backend/README.md).
+バックエンドのドキュメント: [backend/README.md](./backend/README.md)。
 
-## Frontend Development
+## フロントエンド開発
 
-Frontend docs: [frontend/README.md](./frontend/README.md).
+フロントエンドのドキュメント: [frontend/README.md](./frontend/README.md)。
 
-## Deployment
+## デプロイ
 
-Deployment docs: [deployment.md](./deployment.md).
+デプロイのドキュメント: [deployment.md](./deployment.md)。
 
-## Development
+## 開発
 
-General development docs: [development.md](./development.md).
+一般的な開発のドキュメント: [development.md](./development.md)。
 
-This includes using Docker Compose, custom local domains, `.env` configurations, etc.
+これには、Docker Compose、カスタムローカルドメイン、`.env` の設定などが含まれます。
 
-## Release Notes
+## リリースノート
 
-Check the file [release-notes.md](./release-notes.md).
+ファイル [release-notes.md](./release-notes.md) をチェックしてください。
 
-## License
+## ライセンス
 
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+Full Stack FastAPI Template は MIT ライセンスのもとで提供されています。
