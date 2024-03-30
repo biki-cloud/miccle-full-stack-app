@@ -1,6 +1,7 @@
 # リリースノート
 書き方の参考は[こちら](https://github.com/tiangolo/full-stack-fastapi-template/blob/master/release-notes.md)
 
+## Latest Changes
 
 ## 0.1.0
 
