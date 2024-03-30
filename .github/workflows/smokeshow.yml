@@ -7,9 +7,8 @@ on:  # このワークフローがトリガーされるイベントを定義し�
     workflows: [Test]  # "Test"ワークフローが完了したときにワークフローが開始されます。
     types: [completed]  # ワークフローが完了したときにワークフローが開始されます。
 
-permissions: write-all
-#permissions:  # ワークフローの権限を定義します。
-#  statuses: write  # ステータスに対する書き込み権限を持っています。
+permissions:  # ワークフローの権限を定義します。
+  statuses: write  # ステータスに対する書き込み権限を持っています。
 
 jobs:  # ワークフロー内で実行されるジョブを定義します。
   smokeshow:  # ジョブの名前を定義します。
@@ -33,6 +32,6 @@ jobs:  # ワークフロー内で実行されるジョブを定義します。
           SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}  # GitHubのステータスの説明を定義します。
           SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 90  # カバレッジの閾値を定義します。
           SMOKESHOW_GITHUB_CONTEXT: coverage  # GitHubのコンテキストを定義します。
-          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHubのトークンを使用します。
+          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.SMOKESHOW_GITHUB_TOKEN }}  # GitHubのトークンを使用します。
           SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}  # PRのHEADのSHAを指定します。
           SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_AUTH_KEY }}  # smokeshowの認証キーを指定します。
