@@ -21,18 +21,18 @@ jobs:  # ワークフロー内で実行されるジョブを定義します。
         with:
           python-version: '3.9'  # 使用するPythonのバージョンを指定します。
 
-      - run: pip install smokeshow  # smokeshowをインストールします。
-
-      - uses: dawidd6/action-download-artifact@v3.1.4  # アーティファクトをダウンロードします。
-        with:
-          workflow: test.yml  # アーティファクトを生成したワークフローを指定します。
-          commit: ${{ github.event.workflow_run.head_sha }}  # アーティファクトを生成したコミットを指定します。
-
-      - run: smokeshow upload coverage-html  # カバレッジレポートをsmokeshowにアップロードします。
-        env:
-          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}  # GitHubのステータスの説明を定義します。
-          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 90  # カバレッジの閾値を定義します。
-          SMOKESHOW_GITHUB_CONTEXT: coverage  # GitHubのコンテキストを定義します。
-          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.SMOKESHOW_GITHUB_TOKEN }}  # GitHubのトークンを使用します。
-          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}  # PRのHEADのSHAを指定します。
-          SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_AUTH_KEY }}  # smokeshowの認証キーを指定します。
+#      - run: pip install smokeshow  # smokeshowをインストールします。
+#
+#      - uses: dawidd6/action-download-artifact@v3.1.4  # アーティファクトをダウンロードします。
+#        with:
+#          workflow: test.yml  # アーティファクトを生成したワークフローを指定します。
+#          commit: ${{ github.event.workflow_run.head_sha }}  # アーティファクトを生成したコミットを指定します。
+#
+#      - run: smokeshow upload coverage-html  # カバレッジレポートをsmokeshowにアップロードします。
+#        env:
+#          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}  # GitHubのステータスの説明を定義します。
+#          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 90  # カバレッジの閾値を定義します。
+#          SMOKESHOW_GITHUB_CONTEXT: coverage  # GitHubのコンテキストを定義します。
+#          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.SMOKESHOW_GITHUB_TOKEN }}  # GitHubのトークンを使用します。
+#          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}  # PRのHEADのSHAを指定します。
+#          SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_AUTH_KEY }}  # smokeshowの認証キーを指定します。
