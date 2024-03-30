@@ -1,117 +1,117 @@
-# FastAPI Project - Frontend
+# FastAPIプロジェクト - フロントエンド
 
-The frontend is built with [Vite](https://vitejs.dev/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), [TanStack Query](https://tanstack.com/query), [TanStack Router](https://tanstack.com/router) and [Chakra UI](https://chakra-ui.com/).
+フロントエンドは、[Vite](https://vitejs.dev/)、[React](https://reactjs.org/)、[TypeScript](https://www.typescriptlang.org/)、[TanStack Query](https://tanstack.com/query)、[TanStack Router](https://tanstack.com/router)、および[Chakra UI](https://chakra-ui.com/)を使用して構築されています。
 
-## Frontend development
+## フロントエンドの開発
 
-Before you begin, ensure that you have either the Node Version Manager (nvm) or Fast Node Manager (fnm) installed on your system. 
+開始する前に、Node Version Manager（nvm）またはFast Node Manager（fnm）のいずれかがシステムにインストールされていることを確認してください。
 
-* To install fnm follow the [official fnm guide](https://github.com/Schniz/fnm#installation). If you prefer nvm, you can install it using the [official nvm guide](https://github.com/nvm-sh/nvm#installing-and-updating).
+* fnmをインストールするには、[公式のfnmガイド](https://github.com/Schniz/fnm#installation)に従ってください。nvmを好む場合は、[公式のnvmガイド](https://github.com/nvm-sh/nvm#installing-and-updating)を使用してインストールできます。
 
-* After installing either nvm or fnm, proceed to the `frontend` directory:
+* nvmまたはfnmのいずれかをインストールしたら、`frontend`ディレクトリに進みます：
 
 ```bash
 cd frontend
 ```
-* If the Node.js version specified in the `.nvmrc` file isn't installed on your system, you can install it using the appropriate command:
+* `.nvmrc` ファイルに指定された Node.js のバージョンがシステムにインストールされていない場合は、適切なコマンドを使用してインストールできます：
 
 ```bash
-# If using fnm
+# fnmを使用する場合
 fnm install
 
-# If using nvm
+# nvmを使用する場合
 nvm install
 ```
 
-* Once the installation is complete, switch to the installed version:
+* インストールが完了したら、インストールしたバージョンに切り替えます：
 
 ```bash
-# If using fnm
+# fnmを使用する場合
 fnm use 
 
-# If using nvm
+# nvmを使用する場合
 nvm use
 ```
 
-* Within the `frontend` directory, install the necessary NPM packages:
+* `frontend` ディレクトリ内で、必要なNPMパッケージをインストールします：
 
 ```bash
 npm install
 ```
 
-* And start the live server with the following `npm` script:
+* そして、以下の `npm` スクリプトでライブサーバーを起動します：
 
 ```bash
 npm run dev
 ```
 
-* Then open your browser at http://localhost:5173/.
+* その後、ブラウザを http://localhost:5173/ で開きます。
 
-Notice that this live server is not running inside Docker, it's for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But building the image at every change will not be as productive as running the local development server with live reload.
+このライブサーバーはDocker内で動作していないことに注意してください。これはローカル開発用で、推奨されるワークフローです。フロントエンドに満足したら、フロントエンドのDockerイメージをビルドして起動し、本番環境に近い環境でテストすることができます。しかし、変更のたびにイメージをビルドすると、ライブリロード付きのローカル開発サーバーを実行するよりも生産性が低下します。
 
-Check the file `package.json` to see other available options.
+他の利用可能なオプションについては、`package.json` ファイルを確認してください。
 
-### Removing the frontend
+### フロントエンドの削除
 
-If you are developing an API-only app and want to remove the frontend, you can do it easily:
+APIのみのアプリを開発していて、フロントエンドを削除したい場合は、簡単に行うことができます：
 
-* Remove the `./frontend` directory.
+* `./frontend` ディレクトリを削除します。
 
-* In the `docker-compose.yml` file, remove the whole service / section `frontend`.
+* `docker-compose.yml` ファイルから、`frontend` の全サービス/セクションを削除します。
 
-* In the `docker-compose.override.yml` file, remove the whole service / section `frontend`.
+* `docker-compose.override.yml` ファイルから、`frontend` の全サービス/セクションを削除します。
 
-Done, you have a frontend-less (api-only) app. 🤓
+これで、フロントエンドのない（APIのみの）アプリが完成しました。🤓
 
 ---
 
-If you want, you can also remove the `FRONTEND` environment variables from:
+もしよろしければ、以下から `FRONTEND` 環境変数も削除できます：
 
 * `.env`
 * `./scripts/*.sh`
 
-But it would be only to clean them up, leaving them won't really have any effect either way.
+ただし、これはそれらをクリーンアップするためだけで、残しておいても特に影響はありません。
 
-## Generate Client
+## クライアントの生成
 
-* Start the Docker Compose stack.
+* Docker Compose スタックを起動します。
 
-* Download the OpenAPI JSON file from `http://localhost/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
+* `http://localhost/api/v1/openapi.json` からOpenAPI JSONファイルをダウンロードし、それを `frontend` ディレクトリのルートに新しいファイル `openapi.json` としてコピーします。
 
-* To simplify the names in the generated frontend client code, modify the `openapi.json` file by running the following script:
+* 生成されたフロントエンドクライアントコードの名前を簡略化するために、以下のスクリプトを実行して `openapi.json` ファイルを修正します：
 
 ```bash
 node modify-openapi-operationids.js
 ```
 
-* To generate the frontend client, run:
+* フロントエンドクライアントを生成するには、以下を実行します：
 
 ```bash
 npm run generate-client
 ```
 
-* Commit the changes.
+* 変更をコミットします。
 
-Notice that everytime the backend changes (changing the OpenAPI schema), you should follow these steps again to update the frontend client.
+バックエンドが変更されるたびに（OpenAPIスキーマを変更する）、フロントエンドクライアントを更新するためにこれらの手順を再度実行する必要があることに注意してください。
 
-## Using a Remote API
+## リモートAPIの使用
 
-If you want to use a remote API, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
+リモートAPIを使用したい場合は、環境変数 `VITE_API_URL` をリモートAPIのURLに設定できます。例えば、`frontend/.env` ファイルで設定できます：
 
 ```env
 VITE_API_URL=https://my-remote-api.example.com
 ```
 
-Then, when you run the frontend, it will use that URL as the base URL for the API.
+その後、フロントエンドを実行すると、そのURLがAPIのベースURLとして使用されます。
 
-## Code Structure
+## コード構造
 
-The frontend code is structured as follows:
+フロントエンドのコードは以下のように構成されています：
 
-* `frontend/src` - The main frontend code.
-* `frontend/src/assets` - Static assets.
-* `frontend/src/client` - The generated OpenAPI client.
-* `frontend/src/components` -  The different components of the frontend.
-* `frontend/src/hooks` - Custom hooks.
-* `frontend/src/routes` - The different routes of the frontend which include the pages.
-* `theme.tsx` - The Chakra UI custom theme.
+* `frontend/src` - メインのフロントエンドコード。
+* `frontend/src/assets` - 静的アセット。
+* `frontend/src/client` - 生成されたOpenAPIクライアント。
+* `frontend/src/components` - フロントエンドのさまざまなコンポーネント。
+* `frontend/src/hooks` - カスタムフック。
+* `frontend/src/routes` - ページを含むフロントエンドのさまざまなルート。
+* `theme.tsx` - Chakra UIのカスタムテーマ。

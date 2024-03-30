@@ -1,249 +1,249 @@
-# FastAPI Project - Deployment
+# FastAPIプロジェクト - デプロイ
 
-You can deploy the project using Docker Compose to a remote server.
+このプロジェクトは、Docker Composeを使用してリモートサーバーにデプロイできます。
 
-This project expects you to have a Traefik proxy handling communication to the outside world and HTTPS certificates.
+このプロジェクトでは、外部世界との通信とHTTPS証明書を処理するTraefikプロキシが必要です。
 
-You can use CI/CD (continuous integration and continuous deployment) systems to deploy automatically, there are already configurations to do it with GitHub Actions.
+CI/CD（継続的インテグレーションと継続的デプロイメント）システムを使用して自動的にデプロイできます。GitHub Actionsを使用してこれを行うための設定がすでにあります。
 
-But you have to configure a couple things first. 🤓
+ただし、最初にいくつかの設定を行う必要があります。🤓
 
-## Preparation
+## 準備
 
-* Have a remote server ready and available.
-* Configure the DNS records of your domain to point to the IP of the server you just created.
-* Configure a wildcard subdomain for your domain, so that you can have multiple subdomains for different services, e.g. `*.fastapi-project.example.com`. This will be useful for accessing different components, like `traefik.fastapi-project.example.com`, `adminer.fastapi-project.example.com`, etc. And also for `staging`, like `staging.fastapi-project.example.com`, `staging.adminer.fastapi-project.example.com`, etc.
-* Install and configure [Docker](https://docs.docker.com/engine/install/) on the remote server (Docker Engine, not Docker Desktop).
+* リモートサーバーを準備し、利用可能にします。
+* ドメインのDNSレコードを、作成したサーバーのIPに指すように設定します。
+* ドメインのワイルドカードサブドメインを設定します。これにより、`*.fastapi-project.example.com`のような異なるサービスのための複数のサブドメインを持つことができます。これは、`traefik.fastapi-project.example.com`、`adminer.fastapi-project.example.com`などの異なるコンポーネントにアクセスするため、また`staging`のために、`staging.fastapi-project.example.com`、`staging.adminer.fastapi-project.example.com`などにアクセスするために便利です。
+* リモートサーバーに[Docker](https://docs.docker.com/engine/install/)をインストールし、設定します（Docker Engine、Docker Desktopではありません）。
 
-## Public Traefik
+## パブリックTraefik
 
-We need a Traefik proxy to handle incoming connections and HTTPS certificates.
+受信接続とHTTPS証明書を処理するTraefikプロキシが必要です。
 
-You need to do these next steps only once.
+次の手順は一度だけ行う必要があります。
 
 ### Traefik Docker Compose
 
-* Create a remote directory to store your Traefik Docker Compose file:
+* Traefik Docker Composeファイルを保存するためのリモートディレクトリを作成します：
 
 ```bash
 mkdir -p /root/code/traefik-public/
 ```
 
-Copy the Traefik Docker Compose file to your server. You could do it by running the command `rsync` in your local terminal:
+Traefik Docker Composeファイルをサーバーにコピーします。これは、ローカルのターミナルで`rsync`コマンドを実行することで行うことができます：
 
 ```bash
 rsync -a docker-compose.traefik.yml root@your-server.example.com:/root/code/traefik-public/
 ```
 
-### Traefik Public Network
+# Traefik Public Network
 
-This Traefik will expect a Docker "public network" named `traefik-public` to communicate with your stack(s).
+このTraefikは、`traefik-public`という名前のDocker "public network"を通じてスタックと通信することを期待しています。
 
-This way, there will be a single public Traefik proxy that handles the communication (HTTP and HTTPS) with the outside world, and then behind that, you could have one or more stacks with different domains, even if they are on the same single server.
+このようにすると、外部世界との通信（HTTPとHTTPS）を処理する単一の公開Traefikプロキシが存在し、その背後には、同一の単一サーバー上でも、異なるドメインを持つ1つ以上のスタックが存在することができます。
 
-To create a Docker "public network" named `traefik-public` run the following command in your remote server:
+リモートサーバーで以下のコマンドを実行して、`traefik-public`という名前のDocker "public network"を作成します：
 
 ```bash
 docker network create traefik-public
 ```
 
-### Traefik Environment Variables
+### Traefikの環境変数
 
-The Traefik Docker Compose file expects some environment variables to be set in your terminal before starting it. You can do it by running the following commands in your remote server.
+Traefik Docker Composeファイルは、それを開始する前にターミナルでいくつかの環境変数が設定されていることを期待しています。これは、リモートサーバーで以下のコマンドを実行することで行うことができます。
 
-* Create the username for HTTP Basic Auth, e.g.:
+* HTTP Basic Authのユーザー名を作成します。例えば：
 
 ```bash
 export USERNAME=admin
 ```
 
-* Create an environment variable with the password for HTTP Basic Auth, e.g.:
+* HTTP Basic Authのパスワードを環境変数に作成します。例えば：
 
 ```bash
 export PASSWORD=changethis
 ```
 
-* Use openssl to generate the "hashed" version of the password for HTTP Basic Auth and store it in an environment variable:
+* opensslを使用してHTTP Basic Authのパスワードの"ハッシュ化"バージョンを生成し、それを環境変数に保存します：
 
 ```bash
 export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
 ```
 
-To verify that the hashed password is correct, you can print it:
+ハッシュ化されたパスワードが正しいことを確認するために、それを印刷することができます：
 
 ```bash
 echo $HASHED_PASSWORD
 ```
 
-* Create an environment variable with the domain name for your server, e.g.:
+* サーバーのドメイン名を環境変数に作成します。例えば：
 
 ```bash
 export DOMAIN=fastapi-project.example.com
 ```
 
-* Create an environment variable with the email for Let's Encrypt, e.g.:
+* Let's Encryptのメールを環境変数に作成します。例えば：
 
 ```bash
 export EMAIL=admin@example.com
 ```
 
-**Note**: you need to set a different email, an email `@example.com` won't work.
+**注意**：異なるメールを設定する必要があります。`@example.com`のメールは機能しません。
 
-### Start the Traefik Docker Compose
+### Traefik Docker Composeの開始
 
-Go to the directory where you copied the Traefik Docker Compose file in your remote server:
+リモートサーバーでTraefik Docker Composeファイルをコピーしたディレクトリに移動します：
 
 ```bash
 cd /root/code/traefik-public/
 ```
 
-Now with the environment variables set and the `docker-compose.traefik.yml` in place, you can start the Traefik Docker Compose running the following command:
+これで、環境変数が設定され、`docker-compose.traefik.yml`が配置されているので、次のコマンドを実行してTraefik Docker Composeを開始できます：
 
 ```bash
 docker compose -f docker-compose.traefik.yml up -d
 ```
 
-## Deploy the FastAPI Project
+## FastAPIプロジェクトのデプロイ
 
-Now that you have Traefik in place you can deploy your FastAPI project with Docker Compose.
+Traefikが配置されているので、Docker Composeを使用してFastAPIプロジェクトをデプロイできます。
 
-**Note**: You might want to jump ahead to the section about Continuous Deployment with GitHub Actions.
+**注意**：GitHub Actionsを使用した継続的デプロイのセクションに進むことをお勧めします。
 
-## Environment Variables
+## 環境変数
 
-You need to set some environment variables first.
+まず、いくつかの環境変数を設定する必要があります。
 
-Set the `ENVIRONMENT`, by default `local` (for development), but when deploying to a server you would put something like `staging` or `production`:
+`ENVIRONMENT`を設定します。デフォルトは`local`（開発用）ですが、サーバーにデプロイする場合は`staging`や`production`などを設定します：
 
 ```bash
 export ENVIRONMENT=production
 ```
 
-Set the `DOMAIN`, by default `localhost` (for development), but when deploying you would use your own domain, for example:
+`DOMAIN`を設定します。デフォルトは`localhost`（開発用）ですが、デプロイする場合は自分のドメインを使用します。例えば：
 
 ```bash
 export DOMAIN=fastapi-project.example.com
 ```
 
-You can set several variables, like:
+以下のようないくつかの変数を設定できます：
 
-* `BACKEND_CORS_ORIGINS`: A list of allowed CORS origins separated by commas.
-* `SECRET_KEY`: The secret key for the FastAPI project, used to sign tokens.
-* `FIRST_SUPERUSER`: The email of the first superuser, this superuser will be the one that can create new users.
-* `FIRST_SUPERUSER_PASSWORD`: The password of the first superuser.
-* `USERS_OPEN_REGISTRATION`: Whether to allow open registration of new users.
-* `SMTP_HOST`: The SMTP server host to send emails, this would come from your email provider (E.g. Mailgun, Sparkpost, Sendgrid, etc).
-* `SMTP_USER`: The SMTP server user to send emails.
-* `SMTP_PASSWORD`: The SMTP server password to send emails.
-* `EMAILS_FROM_EMAIL`: The email account to send emails from.
-* `POSTGRES_SERVER`: The hostname of the PostgreSQL server. You can leave the default of `db`, provided by the same Docker Compose. You normally wouldn't need to change this unless you are using a third-party provider.
-* `POSTGRES_PORT`: The port of the PostgreSQL server. You can leave the default. You normally wouldn't need to change this unless you are using a third-party provider.
-* `POSTGRES_PASSWORD`: The Postgres password.
-* `POSTGRES_USER`: The Postgres user, you can leave the default.
-* `POSTGRES_DB`: The database name to use for this application. You can leave the default of `app`.
-* `SENTRY_DSN`: The DSN for Sentry, if you are using it.
+* `BACKEND_CORS_ORIGINS`：カンマで区切られた許可されるCORSオリジンのリスト。
+* `SECRET_KEY`：FastAPIプロジェクトの秘密鍵。トークンの署名に使用されます。
+* `FIRST_SUPERUSER`：最初のスーパーユーザーのメール。このスーパーユーザーは新しいユーザーを作成できるユーザーになります。
+* `FIRST_SUPERUSER_PASSWORD`：最初のスーパーユーザーのパスワード。
+* `USERS_OPEN_REGISTRATION`：新しいユーザーのオープン登録を許可するかどうか。
+* `SMTP_HOST`：メールを送信するためのSMTPサーバーホスト。これはあなたのメールプロバイダーから来ます（例：Mailgun、Sparkpost、Sendgridなど）。
+* `SMTP_USER`：メールを送信するためのSMTPサーバーユーザー。
+* `SMTP_PASSWORD`：メールを送信するためのSMTPサーバーパスワード。
+* `EMAILS_FROM_EMAIL`：メールを送信するメールアカウント。
+* `POSTGRES_SERVER`：PostgreSQLサーバーのホスト名。同じDocker Composeが提供するデフォルトの`db`をそのまま使用できます。通常、サードパーティのプロバイダーを使用している場合を除き、これを変更する必要はありません。
+* `POSTGRES_PORT`：PostgreSQLサーバーのポート。デフォルトのままで良いです。通常、サードパーティのプロバイダーを使用している場合を除き、これを変更する必要はありません。
+* `POSTGRES_PASSWORD`：Postgresのパスワード。
+* `POSTGRES_USER`：Postgresのユーザー。デフォルトのままで良いです。
+* `POSTGRES_DB`：このアプリケーションで使用するデータベース名。デフォルトの`app`をそのまま使用できます。
+* `SENTRY_DSN`：SentryのDSN。使用している場合。
 
-### Generate secret keys
+### 秘密鍵の生成
 
-Some environment variables in the `.env` file have a default value of `changethis`.
+`.env`ファイルのいくつかの環境変数は、デフォルト値が`changethis`になっています。
 
-You have to change them with a secret key, to generate secret keys you can run the following command:
+これらを秘密鍵で置き換える必要があります。秘密鍵を生成するには、次のコマンドを実行します：
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-Copy the content and use that as password / secret key. And run that again to generate another secure key.
+内容をコピーしてパスワード/秘密鍵として使用します。そして、再度安全なキーを生成するためにそれを実行します。
 
-### Deploy with Docker Compose
+### Docker Composeでのデプロイ
 
-With the environment variables in place, you can deploy with Docker Compose:
+環境変数が設定されている場合、Docker Composeを使用してデプロイできます：
 
 ```bash
 docker compose -f docker-compose.yml up -d
 ```
 
-For production you wouldn't want to have the overrides in `docker-compose.override.yml`, that's why we explicitly specify `docker-compose.yml` as the file to use.
+本番環境では、`docker-compose.override.yml`のオーバーライドを使用したくないため、使用するファイルとして明示的に`docker-compose.yml`を指定しています。
 
-## Continuous Deployment (CD)
+## 継続的デプロイメント（CD）
 
-You can use GitHub Actions to deploy your project automatically. 😎
+GitHub Actionsを使用してプロジェクトを自動的にデプロイできます。😎
 
-You can have multiple environment deployments.
+複数の環境デプロイメントを持つことができます。
 
-There are already two environments configured, `staging` and `production`. 🚀
+すでに`staging`と`production`の2つの環境が設定されています。🚀
 
-### Install GitHub Actions Runner
+### GitHub Actions Runnerのインストール
 
-* On your remote server, if you are running as the `root` user, create a user for your GitHub Actions:
+* リモートサーバーで、`root`ユーザーとして実行している場合は、GitHub Actions用のユーザーを作成します：
 
 ```bash
 adduser github
 ```
 
-* Add Docker permissions to the `github` user:
+* `github`ユーザーにDockerの権限を追加します：
 
 ```bash
 usermod -aG docker github
 ```
 
-* Temporarily switch to the `github` user:
+* 一時的に`github`ユーザーに切り替えます：
 
 ```bash
 su - github
 ```
 
-* Go to the `github` user's home directory:
+* `github`ユーザーのホームディレクトリに移動します：
 
 ```bash
 cd
 ```
 
-* [Install a GitHub Action self-hosted runner following the official guide](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
+* [公式ガイドに従ってGitHub Actionの自己ホスト型ランナーをインストールします](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository)。
 
-* When asked about labels, add a label for the environment, e.g. `production`. You can also add labels later.
+* ラベルについて尋ねられたら、環境のラベルを追加します。例えば、`production`など。後からラベルを追加することもできます。
 
-After installing, the guide would tell you to run a command to start the runner. Nevertheless, it would stop once you terminate that process or if your local connection to your server is lost.
+インストール後、ガイドではランナーを開始するためのコマンドを実行するよう指示されます。しかし、そのプロセスを終了したり、サーバーへのローカル接続が失われたりすると、ランナーは停止します。
 
-To make sure it runs on startup and continues running, you can install it as a service. To do that, exit the `github` user and go back to the `root` user:
+起動時に実行され、継続的に実行されるようにするために、サービスとしてインストールすることができます。それを行うためには、`github`ユーザーを終了し、`root`ユーザーに戻ります：
 
 ```bash
 exit
 ```
 
-After you do it, you would be on the `root` user again. And you will be on the previous directory, belonging to the `root` user.
+これを行うと、再度`root`ユーザーになります。そして、`root`ユーザーの前のディレクトリに戻ります。
 
-* Go to the `actions-runner` directory inside of the `github` user's home directory:
+* `github`ユーザーのホームディレクトリ内の`actions-runner`ディレクトリに移動します：
 
 ```bash
 cd /home/github/actions-runner
 ```
 
-* Install the self-hosted runner as a service with the user `github`:
+* `github`ユーザーで自己ホスト型ランナーをサービスとしてインストールします：
 
 ```bash
 ./svc.sh install github
 ```
 
-* Start the service:
+* サービスを開始します：
 
 ```bash
 ./svc.sh start
 ```
 
-* Check the status of the service:
+* サービスのステータスを確認します：
 
 ```bash
 ./svc.sh status
 ```
 
-You can read more about it in the official guide: [Configuring the self-hosted runner application as a service](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service).
+詳細については、公式ガイドの[自己ホスト型ランナーアプリケーションをサービスとして設定する](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service)を参照してください。
 
-### Set Secrets
+### シークレットの設定
 
-On your repository, configure secrets for the environment variables you need, the same ones described above, including `SECRET_KEY`, etc. Follow the [official GitHub guide for setting repository secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
+あなたのリポジトリで、必要な環境変数のシークレットを設定します。これには、上記の`SECRET_KEY`などが含まれます。リポジトリのシークレットを設定するための[公式GitHubガイド](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)に従ってください。
 
-The current Github Actions workflows expect these secrets:
+現在のGithub Actionsワークフローは、以下のシークレットを期待しています：
 
 * `DOMAIN_PRODUCTION`
 * `DOMAIN_STAGING`
@@ -253,18 +253,18 @@ The current Github Actions workflows expect these secrets:
 * `POSTGRES_PASSWORD`
 * `SECRET_KEY`
 
-## GitHub Action Deployment Workflows
+## GitHub Actionデプロイメントワークフロー
 
-There are GitHub Action workflows in the `.github/workflows` directory already configured for deploying to the environments (GitHub Actions runners with the labels):
+`.github/workflows`ディレクトリには、環境（GitHub Actionsランナーのラベル）にデプロイするためのGitHub Actionワークフローがすでに設定されています：
 
-* `staging`: after pushing (or merging) to the branch `master`.
-* `production`: after publishing a release.
+* `staging`：`master`ブランチにプッシュ（またはマージ）した後。
+* `production`：リリースを公開した後。
 
-If you need to add extra environments you could use those as a starting point.
+追加の環境が必要な場合は、これらを出発点として使用できます。
 
 ## URLs
 
-Replace `fastapi-project.example.com` with your domain.
+`fastapi-project.example.com`をあなたのドメインに置き換えてください。
 
 ### Main Traefik Dashboard
 

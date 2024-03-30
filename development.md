@@ -1,131 +1,129 @@
-# FastAPI Project - Development
+# FastAPIプロジェクト - 開発
 
-## Development in `localhost` with a custom domain
+## カスタムドメインの`localhost`での開発
 
-You might want to use something different than `localhost` as the domain. For example, if you are having problems with cookies that need a subdomain, and Chrome is not allowing you to use `localhost`.
+`localhost`以外のドメインを使用したい場合があります。たとえば、サブドメインが必要なクッキーに問題がある場合や、Chromeが`localhost`の使用を許可していない場合などです。
 
-In that case, you have two options: you could use the instructions to modify your system `hosts` file with the instructions below in **Development with a custom IP** or you can just use `localhost.tiangolo.com`, it is set up to point to `localhost` (to the IP `127.0.0.1`) and all its subdomains too. And as it is an actual domain, the browsers will store the cookies you set during development, etc.
+その場合、2つのオプションがあります。下記の**カスタムIPを使用した開発**セクションにある手順でシステムの`hosts`ファイルを変更するか、または`localhost.tiangolo.com`を使用することができます。これは、`localhost`（IP `127.0.0.1`）およびそのサブドメインを指すように設定されています。実際のドメインであるため、ブラウザーは開発中に設定したクッキーやその他の情報を保存します。
 
-If you used the default CORS enabled domains while generating the project, `localhost.tiangolo.com` was configured to be allowed. If you didn't, you will need to add it to the list in the variable `BACKEND_CORS_ORIGINS` in the `.env` file.
+プロジェクトを生成する際にデフォルトのCORS有効なドメインを使用した場合、`localhost.tiangolo.com`が許可されています。そうでない場合は、`.env`ファイルの`BACKEND_CORS_ORIGINS`変数のリストに追加する必要があります。
 
-To configure it in your stack, follow the section **Change the development "domain"** below, using the domain `localhost.tiangolo.com`.
+この設定をスタックに適用するには、以下の**開発用ドメインを変更**セクションに従って、ドメイン`localhost.tiangolo.com`を使用してください。
 
-After performing those steps you should be able to open: http://localhost.tiangolo.com and it will be served by your stack in `localhost`.
+これらの手順を実行した後、http://localhost.tiangolo.com を開くと、ローカルで実行されているスタックによって提供されます。
 
-Check all the corresponding available URLs in the section at the end.
+### 最後のセクションにある対応する利用可能なURLを確認してください。
 
-## Development with a custom IP
+## カスタムIPを使用した開発
 
-If you are running Docker in an IP address different than `127.0.0.1` (`localhost`), you will need to perform some additional steps. That will be the case if you are running a custom Virtual Machine or your Docker is located in a different machine in your network.
+Dockerを`127.0.0.1`（`localhost`）以外のIPアドレスで実行している場合は、いくつかの追加手順を実行する必要があります。これは、カスタムの仮想マシンを実行している場合や、Dockerがネットワーク内の別のマシンにある場合に該当します。
 
-In that case, you will need to use a fake local domain (`dev.example.com`) and make your computer think that the domain is served by the custom IP (e.g. `192.168.99.150`).
+その場合、カスタムIP（たとえば `192.168.99.150`）で偽のローカルドメイン（`dev.example.com`）を使用し、コンピューターがそのドメインがカスタムIPで提供されていると思わせる必要があります。
 
-If you have a custom domain like that, you need to add it to the list in the variable `BACKEND_CORS_ORIGINS` in the `.env` file.
+そのようなカスタムドメインを持っている場合は、`.env`ファイルの`BACKEND_CORS_ORIGINS`変数のリストに追加する必要があります。
 
-* Open your `hosts` file with administrative privileges using a text editor:
+* テキストエディタを使用して管理者権限で`hosts`ファイルを開きます：
 
-  * **Note for Windows**: If you are in Windows, open the main Windows menu, search for "notepad", right click on it, and select the option "open as Administrator" or similar. Then click the "File" menu, "Open file", go to the directory `c:\Windows\System32\Drivers\etc\`, select the option to show "All files" instead of only "Text (.txt) files", and open the `hosts` file.
-  * **Note for Mac and Linux**: Your `hosts` file is probably located at `/etc/hosts`, you can edit it in a terminal running `sudo nano /etc/hosts`.
+  * **Windowsの場合の注意点**：Windowsの場合は、メインのWindowsメニューを開き、"notepad"を検索し、それに右クリックして、"管理者として開く"などのオプションを選択します。 次に、"ファイル"メニューをクリックし、"ファイルを開く"を選択し、ディレクトリ`c:\Windows\System32\Drivers\etc\`に移動し、拡張子`.txt`の代わりに "すべてのファイル"を表示するオプションを選択し、`hosts`ファイルを開きます。
+  * **MacとLinuxの場合の注意点**：`hosts`ファイルはおそらく`/etc/hosts`にありますので、ターミナルで実行して`sudo nano /etc/hosts`を実行して編集できます。
 
-* Additional to the contents it might have, add a new line with the custom IP (e.g. `192.168.99.150`) a space character, and your fake local domain: `dev.example.com`.
+* それに追加して、カスタムIP（たとえば `192.168.99.150`）とスペース、および偽のローカルドメイン `dev.example.com` を含む新しい行を`hosts`ファイルに追加します。
 
-The new line might look like:
+新しい行は次のようになります：
+192.168.99.150 dev.example.com
 
-```
-192.168.99.150    dev.example.com
-```
 
-* Save the file.
-  * **Note for Windows**: Make sure you save the file as "All files", without an extension of `.txt`. By default, Windows tries to add the extension. Make sure the file is saved as is, without extension.
+* ファイルを保存します。
+  * **Windowsの場合の注意点**：ファイルを`.txt`の拡張子なしで "すべてのファイル"として保存することを確認してください。 Windowsはデフォルトで拡張子を追加しようとします。ファイルは拡張子なしで保存されていることを確認してください。
 
-...that will make your computer think that the fake local domain is served by that custom IP, and when you open that URL in your browser, it will talk directly to your locally running server when it is asked to go to `dev.example.com` and think that it is a remote server while it is actually running in your computer.
+これにより、コンピューターは偽のローカルドメインがそのカスタムIPで提供されていると思い込み、ブラウザーに`dev.example.com`に移動するように要求されたときに、実際にはコンピューターで実行されているローカルなサーバーと通信します。
 
-To configure it in your stack, follow the section **Change the development "domain"** below, using the domain `dev.example.com`.
+この設定をスタックに適用するには、以下の**開発用ドメインを変更**セクションに従って、ドメイン `dev.example.com` を使用してください。
 
-After performing those steps you should be able to open: http://dev.example.com and it will be server by your stack in `192.168.99.150`.
+これらの手順を実行した後、http://dev.example.com を開くと、ローカルで実行されているスタックによって提供されます。
 
-Check all the corresponding available URLs in the section at the end.
+最後のセクションにある対応する利用可能なURLを確認してください。
 
-## Change the development "domain"
+## 開発用 "ドメイン" の変更
 
-If you need to use your local stack with a different domain than `localhost`, you need to make sure the domain you use points to the IP where your stack is set up.
+`localhost`以外のドメインをローカルスタックで使用する必要がある場合は、使用するドメインがスタックが設定されているIPを指すように確認する必要があります。
 
-To simplify your Docker Compose setup, for example, so that the API docs (Swagger UI) knows where is your API, you should let it know you are using that domain for development.
+例えば、APIドキュメント（Swagger UI）があなたのAPIがどこにあるかを知るために、Docker Composeの設定を簡素化するために、開発用にそのドメインを使用していることを知らせるべきです。
 
-* Open the file located at `./.env`. It would have a line like:
+* `./.env`にあるファイルを開きます。次のような行があるはずです：
 
 ```
 DOMAIN=localhost
 ```
 
-* Change it to the domain you are going to use, e.g.:
+* 使用するドメインに変更します。例えば：
 
 ```
 DOMAIN=localhost.tiangolo.com
 ```
 
-That variable will be used by the Docker Compose files.
+その変数はDocker Composeファイルで使用されます。
 
-After that, you can restart your stack with:
+その後、スタックを再起動できます：
 
 ```bash
 docker compose up -d
 ```
 
-and check all the corresponding available URLs in the section at the end.
+そして、最後のセクションにある対応する利用可能なURLすべてを確認します。
 
-## Docker Compose files and env vars
+## Docker Composeファイルと環境変数
 
-There is a main `docker-compose.yml` file with all the configurations that apply to the whole stack, it is used automatically by `docker compose`.
+メインの `docker-compose.yml` ファイルには、スタック全体に適用されるすべての設定があり、`docker compose`によって自動的に使用されます。
 
-And there's also a `docker-compose.override.yml` with overrides for development, for example to mount the source code as a volume. It is used automatically by `docker compose` to apply overrides on top of `docker-compose.yml`.
+また、ソースコードをボリュームとしてマウントするなど、開発用のオーバーライドがある `docker-compose.override.yml` もあります。これは `docker compose` によって自動的に使用され、`docker-compose.yml` の上にオーバーライドを適用します。
 
-These Docker Compose files use the `.env` file containing configurations to be injected as environment variables in the containers.
+これらのDocker Composeファイルは、コンテナ内に環境変数として注入される設定を含む `.env` ファイルを使用します。
 
-They also use some additional configurations taken from environment variables set in the scripts before calling the `docker compose` command.
+また、`docker compose` コマンドを呼び出す前にスクリプトで設定された環境変数からいくつかの追加設定を使用します。
 
-## The .env file
+## .env ファイル
 
-The `.env` file is the one that contains all your configurations, generated keys and passwords, etc.
+`.env` ファイルは、すべての設定、生成されたキー、パスワードなどを含むファイルです。
 
-Depending on your workflow, you could want to exclude it from Git, for example if your project is public. In that case, you would have to make sure to set up a way for your CI tools to obtain it while building or deploying your project.
+ワークフローによっては、例えばプロジェクトが公開されている場合、Gitから除外したい場合があります。その場合、プロジェクトをビルドまたはデプロイする際にCIツールがそれを取得する方法を設定する必要があります。
 
-One way to do it could be to add each environment variable to your CI/CD system, and updating the `docker-compose.yml` file to read that specific env var instead of reading the `.env` file.
+それを行う一つの方法は、各環境変数をCI/CDシステムに追加し、`docker-compose.yml` ファイルを更新して、`.env` ファイルを読み込む代わりにその特定の環境変数を読み込むようにすることです。
 
-### Pre-commits and code linting
+### Pre-commitsとコードリント
 
-we are using a tool called [pre-commit](https://pre-commit.com/) for code linting and formatting.
+コードのリントとフォーマットには[pre-commit](https://pre-commit.com/)というツールを使用しています。
 
-When you install it, it runs right before making a commit in git. This way it ensures that the code is consistent and formatted even before it is committed.
+これをインストールすると、gitでコミットを作成する直前に実行されます。これにより、コードが一貫性を持ってフォーマットされ、コミットされる前に確認されます。
 
-You can find a file `.pre-commit-config.yaml` with configurations at the root of the project.
+プロジェクトのルートには、設定が記述された`.pre-commit-config.yaml`というファイルがあります。
 
-#### Install pre-commit to run automatically
+#### 自動的に実行するためにpre-commitをインストールする
 
-`pre-commit` is already part of the dependencies of the project, but you could also install it globally if you prefer to, following [the official pre-commit docs](https://pre-commit.com/).
+`pre-commit`はすでにプロジェクトの依存関係の一部ですが、もし好むならば[公式のpre-commitドキュメント](https://pre-commit.com/)に従ってグローバルにインストールすることもできます。
 
-After having the `pre-commit` tool installed and available, you need to "install" it in the local repository, so that it runs automatically before each commit.
+`pre-commit`ツールをインストールし、利用可能にした後、各コミットの前に自動的に実行されるように、ローカルリポジトリにそれを"インストール"する必要があります。
 
-Using Poetry, you could do it with:
+Poetryを使用して、以下のように実行できます：
 
 ```bash
 ❯ poetry run pre-commit install
 pre-commit installed at .git/hooks/pre-commit
 ```
 
-Now whenever you try to commit, e.g. with:
+これで、例えば以下のようにコミットを試みるたびに、pre-commitが自動的に実行されます：
 
 ```bash
 git commit
 ```
 
-...pre-commit will run and check and format the code you are about to commit, and will ask you to add that code (stage it) with git again before committing.
+...pre-commitは、コミットしようとしているコードを実行し、チェックし、フォーマットし、そのコードを再度gitで追加（ステージング）するように求めます。
 
-Then you can `git add` the modified/fixed files again and now you can commit.
+その後、修正/修正されたファイルを再度`git add`でき、今度はコミットできます。
 
-#### Running pre-commit hooks manually
+#### 手動でpre-commitフックを実行する
 
-you can also run `pre-commit` manually on all the files, you can do it using Poetry with:
+また、すべてのファイルで`pre-commit`を手動で実行することもできます。Poetryを使用して以下のように実行できます：
 
 ```bash
 ❯ poetry run pre-commit run --all-files
@@ -140,35 +138,35 @@ prettier.................................................................Passed
 
 ## URLs
 
-The production or staging URLs would use these same paths, but with your own domain.
+本番環境またはステージング環境のURLは、これらと同じパスを使用しますが、独自のドメインを使用します。
 
-### Development URLs
+### 開発用URL
 
-Development URLs, for local development.
+ローカル開発用の開発URL。
 
-Frontend: http://localhost
+フロントエンド: http://localhost
 
-Backend: http://localhost/api/
+バックエンド: http://localhost/api/
 
-Automatic Interactive Docs (Swagger UI): http://localhost/docs
+自動インタラクティブドキュメント（Swagger UI）: http://localhost/docs
 
-Automatic Alternative Docs (ReDoc): http://localhost/redoc
+自動代替ドキュメント（ReDoc）: http://localhost/redoc
 
 Adminer: http://localhost:8080
 
 Traefik UI: http://localhost:8090
 
-### Development in localhost with a custom domain URLs
+### カスタムドメインを使用したlocalhostでの開発用URL
 
-Development URLs, for local development.
+ローカル開発用の開発URL。
 
-Frontend: http://localhost.tiangolo.com
+フロントエンド: http://localhost.tiangolo.com
 
-Backend: http://localhost.tiangolo.com/api/
+バックエンド: http://localhost.tiangolo.com/api/
 
-Automatic Interactive Docs (Swagger UI): http://localhost.tiangolo.com/docs
+自動インタラクティブドキュメント（Swagger UI）: http://localhost.tiangolo.com/docs
 
-Automatic Alternative Docs (ReDoc): http://localhost.tiangolo.com/redoc
+自動代替ドキュメント（ReDoc）: http://localhost.tiangolo.com/redoc
 
 Adminer: http://localhost.tiangolo.com:8080
 
