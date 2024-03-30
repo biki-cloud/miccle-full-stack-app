@@ -5,8 +5,9 @@ on:
     workflows: [Test]
     types: [completed]
 
-permissions:
-  statuses: write
+# permissions:
+  # statuses: write
+permissions: write-all
 
 jobs:
   smokeshow:
