@@ -1,3 +1,11 @@
+# このYAMLファイルは、GitHub Actionsのワークフロー定義で、特定のイベントが発生したときに"Latest Changes"という名前のワークフローを実行します。  このワークフローは以下の2つのイベントでトリガーされます：
+# pull_request_targetイベント：masterブランチに対するプルリクエストが閉じられたとき。
+# workflow_dispatchイベント：手動でワークフローを実行するとき。このとき、PRの番号とデバッグが有効かどうかを指定する必要があります。
+# ワークフローはubuntu-latestランナー上で実行され、以下のステップを含みます：
+# GitHubのコンテキストをダンプします。
+# actions/checkout@v4を使用してリポジトリをチェックアウトします。このとき、FULL_STACK_FASTAPI_POSTGRESQL_LATEST_CHANGESというシークレットをトークンとして使用します。
+# tiangolo/latest-changes:0.3.0を使用して最新の変更を取得します。このとき、GITHUB_TOKENというシークレットをトークンとして使用し、リリースノートを./release-notes.mdに保存します。また、ヘッダーとして'## Latest Changes'を使用し、各ラベルのヘッダー接頭辞として'### 'を使用します。また、デバッグログを有効にします。
+
 name: Latest Changes
 
 on:
