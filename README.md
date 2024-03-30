@@ -1,6 +1,6 @@
 # フルスタック FastAPI テンプレート
 
-<a href="https://github.com/tiangolo/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/tiangolo/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
+<a href="https://github.com/biki-cloud/miccle-full-stack-app/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/biki-cloud/miccle-full-stack-app/workflows/Test/badge.svg" alt="Test"></a>
 <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/tiangolo/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/tiangolo/full-stack-fastapi-template.svg" alt="Coverage"></a>
 
 ## 技術スタックと機能
@@ -25,31 +25,31 @@
 
 ### ダッシュボード ログイン
 
-[![API docs](img/login.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/login.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### ダッシュボード - 管理者
 
-[![API docs](img/dashboard.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/dashboard.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### ダッシュボード - ユーザー作成
 
-[![API docs](img/dashboard-create.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/dashboard-create.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### ダッシュボード - アイテム
 
-[![API docs](img/dashboard-items.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/dashboard-items.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### ダッシュボード - ユーザー設定
 
-[![API docs](img/dashboard-user-settings.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/dashboard-user-settings.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### ダッシュボード - ダークモード
 
-[![API docs](img/dashboard-dark.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/dashboard-dark.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ### インタラクティブ API ドキュメント
 
-[![API docs](img/docs.png)](https://github.com/tiangolo/full-stack-fastapi-template)
+[![API docs](img/docs.png)](https://github.com/biki-cloud/miccle-full-stack-app)
 
 ## 使い方
 
