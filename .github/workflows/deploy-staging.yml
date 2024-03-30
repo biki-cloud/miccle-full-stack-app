@@ -6,6 +6,9 @@ on:  # このワークフローがトリガーされるイベントを定義し�
   push:  # pushイベントがトリガーとなります。
     branches:
       - master  # masterブランチへのpushでワークフローが開始されます。
+  workflow_run: # workflow_runイベントがトリガーとなります。
+    workflows: [ Test ]  # "Test"ワークフローが完了したときにワークフローが開始されます。
+    types: [ completed ]  # ワークフローが完了したときにワークフローが開始されます。
 
 jobs:  # ワークフロー内で実行されるジョブを定義します。
   deploy:  # ジョブの名前を定義します。
@@ -27,5 +30,5 @@ jobs:  # ワークフロー内で実行されるジョブを定義します。
     steps:  # ジョブ内で実行されるステップを定義します。
       - name: Checkout  # ステップの名前を定義します。
         uses: actions/checkout@v4  # GitHubのリポジトリをチェックアウトします。
-      - run: sodo docker compose -f docker-compose.yml build  # Docker Composeを使用してアプリケーションをビルドします。
-      - run: sudo docker compose -f docker-compose.yml up -d  # Docker Composeを使用してアプリケーションを起動します。
+      # - run: sodo docker-compose -f docker-compose.yml build  # Docker Composeを使用してアプリケーションをビルドします。
+      - run: sudo docker-compose -f docker-compose.yml up -d  # Docker Composeを使用してアプリケーションを起動します。

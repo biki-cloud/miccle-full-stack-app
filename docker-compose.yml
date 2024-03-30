@@ -3,6 +3,8 @@ services:
   db:
     image: postgres:12
     restart: always
+#    ports:
+#      # - "5432:5432" # 本来はtraefikでリバースプロキシするべきだが、開発環境では直接アクセスするためにポートを開放
     volumes:
       - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
@@ -16,6 +18,8 @@ services:
   adminer:
     image: adminer
     restart: always
+#    ports:
+#      # - "8080:8080" # 本来はtraefikでリバースプロキシするべきだが、開発環境では直接アクセスするためにポートを開放
     networks:
       - traefik-public
       - default
@@ -39,6 +43,8 @@ services:
   backend:
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     restart: always
+    # ports:
+    # - "5600:80"  # 本来はtraefikでリバースプロキシするべきだが、開発環境では直接アクセスするためにポートを開放
     networks:
       - traefik-public
       - default
@@ -91,6 +97,8 @@ services:
   frontend:
     image: '${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}'
     restart: always
+    # ports:
+      # - "3000:80"  # 本来はtraefikでリバースプロキシするべきだが、開発環境では直接アクセスするためにポートを開放
     networks:
       - traefik-public
       - default
