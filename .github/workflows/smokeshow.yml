@@ -7,8 +7,9 @@ on:  # このワークフローがトリガーされるイベントを定義し�
     workflows: [Test]  # "Test"ワークフローが完了したときにワークフローが開始されます。
     types: [completed]  # ワークフローが完了したときにワークフローが開始されます。
 
-permissions:  # ワークフローの権限を定義します。
-  statuses: write  # ステータスに対する書き込み権限を持っています。
+permissions: write-all
+#permissions:  # ワークフローの権限を定義します。
+#  statuses: write  # ステータスに対する書き込み権限を持っています。
 
 jobs:  # ワークフロー内で実行されるジョブを定義します。
   smokeshow:  # ジョブの名前を定義します。
