@@ -1,49 +1,56 @@
-name: Test
+# このYAMLファイルは、GitHub Actionsのワークフロー定義で、masterブランチへのpushまたはプルリクエストが開かれた、または同期されたときにテストを実行します。テストが成功した場合、カバレッジレポートを生成し、それをアーティファクトとして保存します。また、"alls-green"ジョブは、他のすべてのジョブが成功したかどうかを判断し、ブランチ保護のために使用されます。
 
-on:
-  push:
+name: Test  # ワークフローの名前を定義します。
+
+on:  # このワークフローがトリガーされるイベントを定義します。
+  push:  # pushイベントがトリガーとなります。
     branches:
-      - master
-  pull_request:
+      - master  # masterブランチへのpushでワークフローが開始されます。
+  pull_request:  # pull_requestイベントがトリガーとなります。
     types:
-      - opened
-      - synchronize
+      - opened  # プルリクエストが開かれたときにワークフローが開始されます。
+      - synchronize  # プルリクエストが同期されたときにワークフローが開始されます。
 
-jobs:
+jobs:  # ワークフロー内で実行されるジョブを定義します。
+  test:  # ジョブの名前を定義します。
+    runs-on: ubuntu-latest  # ジョブが実行されるランナーを定義します。この場合、最新のUbuntuランナーを使用します。
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    steps:  # ジョブ内で実行されるステップを定義します。
+      - name: Checkout  # ステップの名前を定義します。
+        uses: actions/checkout@v4  # GitHubのリポジトリをチェックアウトします。
 
-      - name: Set up Python
+      - name: Set up Python  # Pythonをセットアップします。
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.10'  # 使用するPythonのバージョンを指定します。
 
-      - run: docker compose build
-      - run: docker compose down -v --remove-orphans
-      - run: docker compose up -d
-      - name: Lint
+      - run: docker compose build  # Docker Composeを使用してアプリケーションをビルドします。
+      - run: docker compose down -v --remove-orphans  # Docker Composeを使用してアプリケーションを停止し、孤立したコンテナを削除します。
+      - run: docker compose up -d  # Docker Composeを使用してアプリケーションを起動します。
+
+      - name: Lint  # リントを実行します。
         run: docker compose exec -T backend bash /app/scripts/lint.sh
-      - name: Run tests
+
+      - name: Run tests  # テストを実行します。
         run: docker compose exec -T backend bash /app/tests-start.sh "Coverage for ${{ github.sha }}"
-      - run: docker compose down -v --remove-orphans
-      - name: Store coverage files
+
+      - run: docker compose down -v --remove-orphans  # Docker Composeを使用してアプリケーションを停止し、孤立したコンテナを削除します。
+
+      - name: Store coverage files  # カバレッジファイルを保存します。
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-html
-          path: backend/htmlcov
+          name: coverage-html  # アーティファクトの名前を定義します。
+          path: backend/htmlcov  # アーティファクトのパスを定義します。
 
   # https://github.com/marketplace/actions/alls-green#why
-  alls-green:  # This job does nothing and is only used for the branch protection
-    if: always()
+  alls-green:  # このジョブは何もせず、ブランチ保護のためだけに存在します。
+    if: always()  # 常にこのジョブを実行します。
     needs:
-      - test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Decide whether the needed jobs succeeded or failed
+      - test  # "test"ジョブが必要です。
+    runs-on: ubuntu-latest  # ジョブが実行されるランナーを定義します。この場合、最新のUbuntuランナーを使用します。
+
+    steps:  # ジョブ内で実行されるステップを定義します。
+      - name: Decide whether the needed jobs succeeded or failed  # 必要なジョブが成功したか失敗したかを判断します。
         uses: re-actors/alls-green@release/v1
         with:
-          jobs: ${{ toJSON(needs) }}
+          jobs: ${{ toJSON(needs) }}  # 必要なジョブをJSON形式で指定します。

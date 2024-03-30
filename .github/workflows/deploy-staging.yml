@@ -1,29 +1,31 @@
-name: Deploy to Staging
+# このワークフローにより、masterブランチへのpushが行われるたびに、自動的にステージング環境へのデプロイが行われます。
 
-on:
-  push:
+name: Deploy to Staging  # ワークフローの名前を定義します。
+
+on:  # このワークフローがトリガーされるイベントを定義します。
+  push:  # pushイベントがトリガーとなります。
     branches:
-      - master
+      - master  # masterブランチへのpushでワークフローが開始されます。
 
-jobs:
-  deploy:
-    runs-on:
-      - self-hosted
-      - staging
-    env:
-      ENVIRONMENT: staging
-      DOMAIN: ${{ secrets.DOMAIN_STAGING }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      FIRST_SUPERUSER: ${{ secrets.FIRST_SUPERUSER }}
-      FIRST_SUPERUSER_PASSWORD: ${{ secrets.FIRST_SUPERUSER_PASSWORD }}
-      SMTP_HOST: ${{ secrets.SMTP_HOST }}
-      SMTP_USER: ${{ secrets.SMTP_USER }}
-      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - run: docker compose -f docker-compose.yml build
-      - run: docker compose -f docker-compose.yml up -d
+jobs:  # ワークフロー内で実行されるジョブを定義します。
+  deploy:  # ジョブの名前を定義します。
+    runs-on:  # ジョブが実行されるランナーを定義します。
+      - self-hosted  # 自己ホスト型のランナーを使用します。
+      - staging  # ランナーのラベルが`staging`のものを使用します。
+    env:  # ジョブで使用される環境変数を定義します。
+      ENVIRONMENT: staging  # 環境名を定義します。
+      DOMAIN: ${{ secrets.DOMAIN_STAGING }}  # ドメイン名をGitHubのシークレットから取得します。
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}  # シークレットキーをGitHubのシークレットから取得します。
+      FIRST_SUPERUSER: ${{ secrets.FIRST_SUPERUSER }}  # 最初のスーパーユーザー名をGitHubのシークレットから取得します。
+      FIRST_SUPERUSER_PASSWORD: ${{ secrets.FIRST_SUPERUSER_PASSWORD }}  # 最初のスーパーユーザーのパスワードをGitHubのシークレットから取得します。
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}  # SMTPホストをGitHubのシークレットから取得します。
+      SMTP_USER: ${{ secrets.SMTP_USER }}  # SMTPユーザー名をGitHubのシークレットから取得します。
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}  # SMTPパスワードをGitHubのシークレットから取得します。
+      EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}  # 送信元のメールアドレスをGitHubのシークレットから取得します。
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}  # PostgresのパスワードをGitHubのシークレットから取得します。
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}  # SentryのDSNをGitHubのシークレットから取得します。
+    steps:  # ジョブ内で実行されるステップを定義します。
+      - name: Checkout  # ステップの名前を定義します。
+        uses: actions/checkout@v4  # GitHubのリポジトリをチェックアウトします。
+      - run: docker compose -f docker-compose.yml build  # Docker Composeを使用してアプリケーションをビルドします。
+      - run: docker compose -f docker-compose.yml up -d  # Docker Composeを使用してアプリケーションを起動します。

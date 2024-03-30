@@ -1,16 +1,21 @@
-version: 2
-updates:
+# このYAMLファイルは、Dependabotの設定を定義しています。GitHub ActionsとPythonのpipパッケージについて、毎日の更新をスケジュールしています。更新があると、プレフィックスが"⬆"のコミットメッセージが作成されます
+
+version: 2  # Dependabotの設定バージョンを定義します。
+
+updates:  # 更新を定義します。
+
   # GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    commit-message:
-      prefix: ⬆
+  - package-ecosystem: "github-actions"  # パッケージエコシステムを指定します。この場合、GitHub Actionsです。
+    directory: "/"  # ディレクトリを指定します。この場合、ルートディレクトリです。
+    schedule:  # スケジュールを定義します。
+      interval: "daily"  # 更新の間隔を指定します。この場合、毎日です。
+    commit-message:  # コミットメッセージを定義します。
+      prefix: ⬆  # コミットメッセージのプレフィックスを指定します。
+
   # Python
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    commit-message:
-      prefix: ⬆
+  - package-ecosystem: "pip"  # パッケージエコシステムを指定します。この場合、pipです。
+    directory: "/"  # ディレクトリを指定します。この場合、ルートディレクトリです。
+    schedule:  # スケジュールを定義します。
+      interval: "daily"  # 更新の間隔を指定します。この場合、毎日です。
+    commit-message:  # コミットメッセージを定義します。
+      prefix: ⬆  # コミットメッセージのプレフィックスを指定します。

@@ -1,28 +1,30 @@
-name: Issue Manager
+# このYAMLファイルは、GitHub Actionsのワークフロー定義で、特定のイベント（スケジュール、issueのコメント作成・編集、issueのラベル付け）が発生したときに、Issue Managerジョブを実行します。このジョブは、特定のユーザー（ここでは"tiangolo"）からの回答があったissueを検出し、回答後一定時間（ここでは10日）が経過したらissueを自動的に閉じます。
 
-on:
-  schedule:
-    - cron: "0 0 * * *"
-  issue_comment:
-    types:
-      - created
-      - edited
-  issues:
-    types:
-      - labeled
+name: Issue Manager  # ワークフローの名前を定義します。
 
-jobs:
-  issue-manager:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: tiangolo/issue-manager@0.5.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config: >
+on:  # このワークフローがトリガーされるイベントを定義します。
+  schedule:  # スケジュールイベントがトリガーとなります。
+    - cron: "0 0 * * *"  # 毎日0時にワークフローが開始されます。
+  issue_comment:  # issue_commentイベントがトリガーとなります。
+    types:
+      - created  # コメントが作成されたときにワークフローが開始されます。
+      - edited  # コメントが編集されたときにワークフローが開始されます。
+  issues:  # issuesイベントがトリガーとなります。
+    types:
+      - labeled  # issueにラベルが付けられたときにワークフローが開始されます。
+
+jobs:  # ワークフロー内で実行されるジョブを定義します。
+  issue-manager:  # ジョブの名前を定義します。
+    runs-on: ubuntu-latest  # ジョブが実行されるランナーを定義します。この場合、最新のUbuntuランナーを使用します。
+    steps:  # ジョブ内で実行されるステップを定義します。
+      - uses: tiangolo/issue-manager@0.5.0  # tiangolo/issue-managerアクションを使用します。
+        with:  # アクションのパラメータを定義します。
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHubのトークンを使用します。
+          config: >  # アクションの設定を定義します。
             {
               "answered": {
-                "users": ["tiangolo"],
-                "delay": 864000,
-                "message": "Assuming the original issue was solved, it will be automatically closed now. But feel free to add more comments or create new issues."
+                "users": ["tiangolo"],  # "tiangolo"というユーザーからの回答を検出します。
+                "delay": 864000,  # 回答後、864000秒（10日）後にissueを自動的に閉じます。
+                "message": "Assuming the original issue was solved, it will be automatically closed now. But feel free to add more comments or create new issues."  # issueを閉じるときに表示するメッセージを定義します。
               }
             }
