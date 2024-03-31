@@ -27,6 +27,7 @@ services:
       - db
     environment:
       - ADMINER_DESIGN=pepa-linha-dark
+      - DOMAIN=staging.fastapi-project.example.com
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -53,7 +54,7 @@ services:
     env_file:
       - .env
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=staging.fastapi-project.example.com
       - ENVIRONMENT=${ENVIRONMENT}
       - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
       - SECRET_KEY=${SECRET_KEY?Variable not set}
@@ -107,6 +108,8 @@ services:
       args:
         - VITE_API_URL=https://${DOMAIN?Variable not set}
         - NODE_ENV=production
+    environment:
+      - DOMAIN=staging.fastapi-project.example.com
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
