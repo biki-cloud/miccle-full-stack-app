@@ -31,4 +31,4 @@ jobs:  # ワークフロー内で実行されるジョブを定義します。
       - name: Checkout  # ステップの名前を定義します。
         uses: actions/checkout@v4  # GitHubのリポジトリをチェックアウトします。
       - run: sudo docker-compose -f docker-compose.yml build  # Docker Composeを使用してアプリケーションをビルドします。
-      - run: sudo docker-compose -f docker-compose.yml up -d  # Docker Composeを使用してアプリケーションを起動します。
+      - run: sudo docker-compose -f docker-compose.yml restart  # Docker Composeを使用してアプリケーションを起動します。
