@@ -27,9 +27,23 @@ jobs:  # ワークフロー内で実行されるジョブを定義します。
       EMAILS_FROM_EMAIL: ${{ secrets.EMAILS_FROM_EMAIL }}  # 送信元のメールアドレスをGitHubのシークレットから取得します。
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}  # PostgresのパスワードをGitHubのシークレットから取得します。
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}  # SentryのDSNをGitHubのシークレットから取得します。
+      VITE_API_URL: http://${{ secrets.DOMAIN_STAGING }}:5600 # APIのURLを定義します。
+      BACKEND_CORS_ORIGINS: http://${{ secrets.DOMAIN_STAGING }}:3000 # CORSのオリジンを定義します。
     steps:  # ジョブ内で実行されるステップを定義します。
       - name: Checkout  # ステップの名前を定義します。
         uses: actions/checkout@v4  # GitHubのリポジトリをチェックアウトします。
+      - run: |
+          echo "DOMAIN=${DOMAIN}"
+          echo "FIRST_SUPERUSER=${FIRST_SUPERUSER}"
+          echo "FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD}"
+          echo "SMTP_HOST=${SMTP_HOST}"
+          echo "SMTP_USER=${SMTP_USER}"
+          echo "SMTP_PASSWORD=${SMTP_PASSWORD}"
+          echo "EMAILS_FROM_EMAIL=${EMAILS_FROM_EMAIL}"
+          echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+          echo "SENTRY_DSN=${SENTRY_DSN}"
+          echo "VITE_API_URL=${VITE_API_URL}"
+          echo "BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}"
       - run: sudo docker-compose -f docker-compose.yml down  # Docker Composeを使用してアプリケーションを停止します。
       - run: sudo docker-compose -f docker-compose.yml build  # Docker Composeを使用してアプリケーションをビルドします。
       - run: sudo docker-compose -f docker-compose.yml up -d  # Docker Composeを使用してアプリケーションを起動します。
