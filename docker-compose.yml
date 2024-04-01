@@ -77,7 +77,7 @@ services:
     build:
       context: ./frontend
       args:
-        - VITE_API_URL=https://${DOMAIN?Variable not set}:5600
+        - VITE_API_URL=http://${DOMAIN?Variable not set}:5600
         - NODE_ENV=production
 volumes:
   app-db-data:
