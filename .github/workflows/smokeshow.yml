@@ -1,36 +1,36 @@
-# このYAMLファイルは、GitHub Actionsのワークフロー定義で、"Test"ワークフローが成功したときに、カバレッジレポートをsmokeshowにアップロードします。これにより、テストカバレッジの情報を継続的に追跡し、管理することができます。
+name: Smokeshow
 
-name: Smokeshow  # ワークフローの名前を定義します。
+on:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
 
-on:  # このワークフローがトリガーされるイベントを定義します。
-  workflow_run:  # workflow_runイベントがトリガーとなります。
-    workflows: [Test]  # "Test"ワークフローが完了したときにワークフローが開始されます。
-    types: [completed]  # ワークフローが完了したときにワークフローが開始されます。
-
+# permissions:
+  # statuses: write
 permissions: write-all
 
-jobs:  # ワークフロー内で実行されるジョブを定義します。
-  smokeshow:  # ジョブの名前を定義します。
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # "Test"ワークフローが成功した場合にのみ、このジョブを実行します。
-    runs-on: ubuntu-latest  # ジョブが実行されるランナーを定義します。この場合、最新のUbuntuランナーを使用します。
+jobs:
+  smokeshow:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
 
-    steps:  # ジョブ内で実行されるステップを定義します。
-      - uses: actions/setup-python@v5  # Pythonをセットアップします。
+    steps:
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.9'  # 使用するPythonのバージョンを指定します。
+          python-version: '3.9'
 
-      - run: pip install smokeshow  # smokeshowをインストールします。
+      - run: pip install smokeshow
 
-      - uses: dawidd6/action-download-artifact@v3.1.4  # アーティファクトをダウンロードします。
+      - uses: dawidd6/action-download-artifact@v3.1.4
         with:
-          workflow: test.yml  # アーティファクトを生成したワークフローを指定します。
-          commit: ${{ github.event.workflow_run.head_sha }}  # アーティファクトを生成したコミットを指定します。
+          workflow: test.yml
+          commit: ${{ github.event.workflow_run.head_sha }}
 
-      - run: smokeshow upload coverage-html  # カバレッジレポートをsmokeshowにアップロードします。
+      - run: smokeshow upload coverage-html
         env:
-          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}  # GitHubのステータスの説明を定義します。
-          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 90  # カバレッジの閾値を定義します。
-          SMOKESHOW_GITHUB_CONTEXT: coverage  # GitHubのコンテキストを定義します。
-          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.SMOKESHOW_GITHUB_TOKEN }}  # GitHubのトークンを使用します。
-          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}  # PRのHEADのSHAを指定します。
-          SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_AUTH_KEY }}  # smokeshowの認証キーを指定します。
+          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: Coverage {coverage-percentage}
+          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 90
+          SMOKESHOW_GITHUB_CONTEXT: coverage
+          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          SMOKESHOW_AUTH_KEY: ${{ secrets.SMOKESHOW_AUTH_KEY }}
