@@ -13,7 +13,7 @@ from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.models import (
     Item,
-    Message,
+    MessageObj,
     UpdatePassword,
     User,
     UserCreate,
@@ -94,7 +94,7 @@ def update_user_me(
     return current_user
 
 
-@router.patch("/me/password", response_model=Message)
+@router.patch("/me/password", response_model=MessageObj)
 def update_password_me(
     *, session: SessionDep, body: UpdatePassword, current_user: CurrentUser
 ) -> Any:
@@ -111,7 +111,7 @@ def update_password_me(
     current_user.hashed_password = hashed_password
     session.add(current_user)
     session.commit()
-    return Message(message="Password updated successfully")
+    return MessageObj(message="Password updated successfully")
 
 
 @router.get("/me", response_model=UserOut)
@@ -196,7 +196,7 @@ def update_user(
 @router.delete("/{user_id}")
 def delete_user(
     session: SessionDep, current_user: CurrentUser, user_id: int
-) -> Message:
+) -> MessageObj:
     """
     Delete a user.
     """
@@ -216,4 +216,4 @@ def delete_user(
     session.exec(statement)  # type: ignore
     session.delete(user)
     session.commit()
-    return Message(message="User deleted successfully")
+    return MessageObj(message="User deleted successfully")

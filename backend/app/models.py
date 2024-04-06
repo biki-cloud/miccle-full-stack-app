@@ -93,7 +93,7 @@ class ItemsOut(SQLModel):
 
 
 # Generic message
-class Message(SQLModel):
+class MessageObj(SQLModel):
     message: str
 
 
