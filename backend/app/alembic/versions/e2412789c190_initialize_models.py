@@ -1,4 +1,4 @@
-"""Initialize models
+"""Initialize model
 
 Revision ID: e2412789c190
 Revises:
