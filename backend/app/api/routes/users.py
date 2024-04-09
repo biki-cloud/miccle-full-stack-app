@@ -22,7 +22,7 @@ from app.model.users import (
     UserUpdate,
     UserUpdateMe,
 )
-from app.repository import users
+from app.crud import users
 from app.utils import generate_new_account_email, send_email
 
 router = APIRouter()

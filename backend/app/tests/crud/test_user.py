@@ -3,7 +3,7 @@ from sqlmodel import Session
 
 from app.core.security import verify_password
 from app.model.users import User, UserCreate, UserUpdate
-from app.repository import users
+from app.crud import users
 from app.tests.utils.utils import random_email, random_lower_string
 
 
