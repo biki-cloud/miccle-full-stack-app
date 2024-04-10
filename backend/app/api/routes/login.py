@@ -9,8 +9,8 @@ from app.api.deps import CurrentUser, SessionDep, get_current_active_superuser
 from app.core import security
 from app.core.config import settings
 from app.core.security import get_password_hash
-from app.model.users import Message, NewPassword, Token, UserOut
 from app.crud import users
+from app.model.users import Message, NewPassword, Token, UserOut
 from app.utils import (
     generate_password_reset_token,
     generate_reset_password_email,
