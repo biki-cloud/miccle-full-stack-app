@@ -43,6 +43,31 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "organizer",
+        sa.Column("email", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False),
+        sa.Column("is_superuser", sa.Boolean(), nullable=False),
+        sa.Column("full_name", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column(
+            "hashed_password", sqlmodel.sql.sqltypes.AutoString(), nullable=False
+        ),
+        sa.PrimaryKeyConstraint("id"),
+    )
+    op.create_index(op.f("ix_user_email"), "organizer", ["email"], unique=True)
+    op.create_table(
+        "event",
+        sa.Column("description", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("title", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("owner_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["owner_id"],
+            ["user.id"],
+        ),
+        sa.PrimaryKeyConstraint("id"),
+    )
     # ### end Alembic commands ###
 
 
@@ -51,4 +76,7 @@ def downgrade():
     op.drop_table("item")
     op.drop_index(op.f("ix_user_email"), table_name="user")
     op.drop_table("user")
+    op.drop_table("event")
+    op.drop_index(op.f("ix_user_email"), table_name="organizer")
+    op.drop_table("organizer")
     # ### end Alembic commands ###
