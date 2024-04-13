@@ -90,7 +90,9 @@ def test_get_existing_organizer_current_organizer(
         "username": organizername,
         "password": password,
     }
-    r = client.post(f"{settings.API_V1_STR}/organizer/login/access-token", data=login_data)
+    r = client.post(
+        f"{settings.API_V1_STR}/organizer/login/access-token", data=login_data
+    )
     tokens = r.json()
     a_token = tokens["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
@@ -414,7 +416,9 @@ def test_delete_organizer_current_organizer(client: TestClient, db: Session) -> 
         "username": organizername,
         "password": password,
     }
-    r = client.post(f"{settings.API_V1_STR}/organizer/login/access-token", data=login_data)
+    r = client.post(
+        f"{settings.API_V1_STR}/organizer/login/access-token", data=login_data
+    )
     tokens = r.json()
     a_token = tokens["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}

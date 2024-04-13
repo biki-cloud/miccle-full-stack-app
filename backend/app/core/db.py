@@ -1,8 +1,8 @@
 from sqlmodel import Session, create_engine, select
 
 from app.core.config import settings
-from app.crud import users, organizers
-from app.models import User, UserCreate, Organizer, OrganizerCreate
+from app.crud import organizers, users
+from app.models import Organizer, OrganizerCreate, User, UserCreate
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
@@ -42,4 +42,6 @@ def init_db(session: Session) -> None:
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_superorganizer=True,
         )
-        organizer = organizers.create_organizer(session=session, organizer_create=organizer_in)
+        organizer = organizers.create_organizer(
+            session=session, organizer_create=organizer_in
+        )
