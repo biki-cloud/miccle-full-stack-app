@@ -3,7 +3,7 @@ from sqlmodel import Session
 
 from app.core.security import verify_password
 from app.crud import organizers
-from app.model.organizers import Organizer, OrganizerCreate, OrganizerUpdate
+from app.models import Organizer, OrganizerCreate, OrganizerUpdate
 from app.tests.utils.utils import random_email, random_lower_string
 
 

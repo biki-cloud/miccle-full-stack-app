@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from app.core.config import settings
 from app.crud import users
-from app.model.users import UserCreate
+from app.models import UserCreate
 from app.tests.utils.utils import random_email, random_lower_string
 
 

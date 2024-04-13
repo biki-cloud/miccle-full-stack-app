@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from app.core.config import settings
 from app.crud import organizers
-from app.model.organizers import OrganizerCreate
+from app.models import OrganizerCreate
 from app.tests.utils.utils import random_email, random_lower_string
 
 

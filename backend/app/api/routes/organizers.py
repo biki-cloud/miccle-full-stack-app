@@ -11,7 +11,7 @@ from app.api.deps.utils import SessionDep
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.crud import organizers
-from app.model.organizers import (
+from app.models import (
     Event,
     Message,
     Organizer,

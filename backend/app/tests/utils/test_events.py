@@ -1,7 +1,7 @@
 from sqlmodel import Session
 
 from app.crud import organizers
-from app.model.organizers import Event, EventCreate
+from app.models import Event, EventCreate
 from app.tests.utils.test_users import create_random_user
 from app.tests.utils.utils import random_lower_string
 

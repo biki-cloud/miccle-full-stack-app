@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from app.api.deps.utils import SessionDep, TokenDep
 from app.core import security
 from app.core.config import settings
-from app.model.organizers import Organizer, TokenPayload
+from app.models import Organizer, TokenPayload
 
 
 def get_current_organizer(session: SessionDep, token: TokenDep) -> Organizer:

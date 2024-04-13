@@ -5,7 +5,7 @@ from sqlmodel import func, select
 
 from app.api.deps.users import CurrentUser
 from app.api.deps.utils import SessionDep
-from app.model.organizers import (
+from app.models import (
     Event,
     EventCreate,
     EventOut,

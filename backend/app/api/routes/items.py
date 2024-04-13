@@ -5,7 +5,7 @@ from sqlmodel import func, select
 
 from app.api.deps.users import CurrentUser
 from app.api.deps.utils import SessionDep
-from app.model.users import Item, ItemCreate, ItemOut, ItemsOut, ItemUpdate, Message
+from app.models import Item, ItemCreate, ItemOut, ItemsOut, ItemUpdate, Message
 
 router = APIRouter()
 
