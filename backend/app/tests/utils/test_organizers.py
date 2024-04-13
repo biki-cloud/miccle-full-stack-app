@@ -10,9 +10,9 @@ from app.tests.utils.utils import random_email, random_lower_string
 def organizer_authentication_headers(
     *, client: TestClient, email: str, password: str
 ) -> dict[str, str]:
-    data = {"organizername": email, "password": password}
+    data = {"username": email, "password": password}
 
-    r = client.post(f"{settings.API_V1_STR}/login/access-token", data=data)
+    r = client.post(f"{settings.API_V1_STR}/organizer/login/access-token", data=data)
     response = r.json()
     auth_token = response["access_token"]
     headers = {"Authorization": f"Bearer {auth_token}"}
@@ -27,7 +27,7 @@ def create_random_organizer(db: Session) -> Organizer:
     return organizer
 
 
-def authentication_token_from_email(
+def authentication_token_from_email_organizer(
     *, client: TestClient, email: str, db: Session
 ) -> dict[str, str]:
     """

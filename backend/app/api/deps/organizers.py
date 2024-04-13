@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from pydantic import ValidationError
+from sqlmodel import select
 
 from app.api.deps.utils import SessionDep, TokenDep
 from app.core import security
@@ -21,6 +22,8 @@ def get_current_organizer(session: SessionDep, token: TokenDep) -> Organizer:
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
+    statement = select(Organizer)
+    session_organizer = session.exec(statement).all()
     organizer = session.get(Organizer, token_data.sub)
     if not organizer:
         raise HTTPException(status_code=404, detail="Organizer not found")

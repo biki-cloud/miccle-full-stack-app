@@ -8,6 +8,7 @@ from app.api.deps.utils import SessionDep, TokenDep
 from app.core import security
 from app.core.config import settings
 from app.models import TokenPayload, User
+from sqlmodel import select
 
 
 def get_current_user(session: SessionDep, token: TokenDep) -> User:
@@ -21,6 +22,8 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
+    statement = select(User)
+    session_user = session.exec(statement).all()
     user = session.get(User, token_data.sub)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

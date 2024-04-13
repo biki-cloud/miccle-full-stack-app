@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 
-from app.api.routes import events, items, login, organizers, users, utils
+from app.api.routes import events, items, user_login, organizers, users, utils, organizer_login
 
 api_router = APIRouter()
-api_router.include_router(login.router, tags=["login"])
+api_router.include_router(user_login.router, tags=["user_login"])
+api_router.include_router(organizer_login.router, tags=["organizer_login"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
 api_router.include_router(utils.router, prefix="/utils", tags=["utils"])
 api_router.include_router(items.router, prefix="/items", tags=["items"])
