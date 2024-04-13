@@ -3,14 +3,15 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import col, delete, func, select
 
-from app.api.deps import (
+from app.api.deps.users import (
     CurrentUser,
-    SessionDep,
     get_current_active_superuser,
 )
+from app.api.deps.utils import SessionDep
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
-from app.model.users import (
+from app.crud import users
+from app.models import (
     Item,
     Message,
     UpdatePassword,
@@ -22,7 +23,6 @@ from app.model.users import (
     UserUpdate,
     UserUpdateMe,
 )
-from app.repository import users
 from app.utils import generate_new_account_email, send_email
 
 router = APIRouter()

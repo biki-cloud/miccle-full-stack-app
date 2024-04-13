@@ -47,13 +47,13 @@ docker compose logs backend
 
 `./backend/`から、すべての依存関係を以下のようにインストールできます：
 
-```console
+```bash
 $ poetry install
 ```
 
 次に、新しい環境でシェルセッションを開始できます：
 
-```console
+```bash
 $ poetry shell
 ```
 
@@ -77,7 +77,7 @@ VS CodeのPythonテストタブを通じてテストを実行するための設�
 
 また、デフォルトの`/start.sh`（ベースイメージに含まれている）の代わりに`/start-reload.sh`（ベースイメージに含まれている）を実行するコマンドオーバーライドもあります。これは単一のサーバープロセスを起動し（本番環境では複数）、コードの変更を検出するとプロセスをリロードします。Pythonファイルに構文エラーがあり、それを保存すると、エラーが発生し、終了し、コンテナが停止します。その後、エラーを修正して再度実行すると、コンテナを再起動できます：
 
-```console
+```bash
 $ docker compose up -d
 ```
 
@@ -85,7 +85,7 @@ $ docker compose up -d
 
 バックエンドをテストするには、以下を実行します：
 
-```console
+```bash
 $ bash ./scripts/test.sh
 ```
 
@@ -121,7 +121,7 @@ docker compose exec backend bash /app/tests-start.sh -x
 
 * バックエンドコンテナで対話式セッションを開始します：
 
-```console
+```bash
 $ docker compose exec backend bash
 ```
 
@@ -129,7 +129,7 @@ $ docker compose exec backend bash
 
 * モデルを変更した後（例えば、列を追加した後）、コンテナ内でリビジョンを作成します。例えば：
 
-```console
+```bash
 $ alembic revision --autogenerate -m "Add column last_name to User model"
 ```
 
@@ -137,7 +137,7 @@ $ alembic revision --autogenerate -m "Add column last_name to User model"
 
 * リビジョンを作成した後、データベースでマイグレーションを実行します（これが実際にデータベースを変更するものです）：
 
-```console
+```bash
 $ alembic upgrade head
 ```
 
@@ -149,7 +149,7 @@ SQLModel.metadata.create_all(engine)
 
 そして、以下の内容を含む`prestart.sh`ファイル内の行をコメントアウトします：
 
-```console
+```bash
 $ alembic upgrade head
 ```
 

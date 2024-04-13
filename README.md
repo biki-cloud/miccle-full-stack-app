@@ -1,4 +1,4 @@
-# フルスタック FastAPI テンプレート
+# miccle Full Stack App
 
 <a href="https://github.com/biki-cloud/miccle-full-stack-app/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/biki-cloud/miccle-full-stack-app/workflows/Test/badge.svg" alt="Test"></a>
 <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/biki-cloud/miccle-full-stack-app" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/biki-cloud/miccle-full-stack-app.svg" alt="Coverage"></a>

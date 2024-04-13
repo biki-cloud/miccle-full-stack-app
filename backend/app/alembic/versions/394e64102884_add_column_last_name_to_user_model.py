@@ -1,8 +1,8 @@
-"""Initialize model
+"""Add column last_name to User model
 
-Revision ID: e2412789c190
-Revises:
-Create Date: 2023-11-24 22:55:43.195942
+Revision ID: 394e64102884
+Revises: e2412789c190
+Create Date: 2024-04-12 22:19:43.177941
 
 """
 import sqlalchemy as sa
@@ -10,8 +10,8 @@ import sqlmodel.sql.sqltypes
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "e2412789c190"
-down_revision = None
+revision = "394e64102884"
+down_revision = "e2412789c190"
 branch_labels = None
 depends_on = None
 
